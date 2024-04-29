@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "920851557868",
+    "project_id": "hopesample-adf88",
+    "storage_bucket": "hopesample-adf88.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:920851557868:android:b02df2b423859802b7a4c9",
+        "android_client_info": {
+          "package_name": "com.example.hopehub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD04R-DgPbionbUR6fqw7hDKxSgI5y5lD8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
