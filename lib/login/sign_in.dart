@@ -1,12 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hopehub/firebase/firebase.dart';
-import 'package:hopehub/login/loginpage.dart';
-import 'package:hopehub/user/home.dart';
+import 'package:hopehub/Model/user_model.dart';
+import 'package:hopehub/collections/controller.dart';
+// import 'package:hopehub/firebase/firebase.dart';
+// import 'package:hopehub/login/loginpage.dart';
+// import 'package:hopehub/user/home.dart';
 import 'package:hopehub/user/package.dart';
+// import 'package:random_string/random_string.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class sign_in extends StatefulWidget {
   const sign_in({super.key});
@@ -16,38 +21,39 @@ class sign_in extends StatefulWidget {
 }
 
 class _sign_instate extends State<sign_in> {
+
+  // create controller object
+
+  Controller controller=Controller();
+
+  final _auth=FirebaseAuth.instance;
   bool _obscureText1 = true;
   bool _obscureText2 = true;
   final UserNameController=TextEditingController();
   final EmailController=TextEditingController();
   final NewPassController=TextEditingController();
   final ConfirmPassController=TextEditingController();
+  final AddressController=TextEditingController();
+  final PhoneController=TextEditingController();
+  
   final _formKey=GlobalKey<FormState>();
 
   String email="",password=""; 
-//   // Future addfirebase(Map<String,dynamic>registereinfomap,String userid)async{
-//   //   return FirebaseFirestore.instance
-//   //   .collection('firebase')
-//   //   .doc(userid)
-
-//   //   .set(registereinfomap);
-//   // }
-
-register() async
+  
+  String ?_password;
+  String ? _confirm;
+// Get auth id  or match document id and authid make same collection
+Future register() async
 {
 try {
-  final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  return await FirebaseAuth.instance.createUserWithEmailAndPassword(
     email: email,
     password: password,
-  );
-   ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Sign up Success"))
-        );
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => packages(indexnum: 0,),
-            ));
+  ).then((value) => value.user!.uid);
+ 
+   
+            //String registered_user_id = randomString(10);
+           
 
 } on FirebaseAuthException catch (e) {
   if (e.code == 'weak-password') {
@@ -76,32 +82,67 @@ try {
         key: _formKey,
         child: Column(
           children: [ Center(child: Padding(
-            padding:  EdgeInsets.only(top: 60),
+            padding:  const EdgeInsets.only(top: 60),
             child: Text("Signup",style: GoogleFonts.inknutAntiqua(color:Colors.amber[900],fontSize:30),),
           )),
+         
         
           Padding(
-            padding:  EdgeInsets.only(top: 80,left: 10,right: 10),
+            padding:  const EdgeInsets.only(top: 50,left: 10,right: 10),
             child: TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
               controller: UserNameController,
               decoration: InputDecoration(border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),borderSide: BorderSide(color:Colors.white)),
-            hintText: "Username",
+            hintText: "Name",
             hintStyle:  TextStyle(color: Colors.white.withOpacity(0.5)),
-            prefixIcon:  Icon(Icons.person_2_outlined,color: Colors.white,),
+            prefixIcon:  const Icon(Icons.person_2_outlined,color: Colors.white,),
             
             ),
             validator: (value) {
               if(value!.isEmpty){
-                return "Please Enter the Username";
+                return "Please Enter the Name";
               }
               return null;
             },
             style: TextStyle(color: Colors.white),),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 30,left: 10,right: 10),
+            padding: const EdgeInsets.only(left: 10,right: 20,top: 30),
+            child: TextFormField(
+              style: TextStyle(color: Colors.white),
+              autovalidateMode:AutovalidateMode.onUserInteraction ,
+              controller:AddressController ,
+              decoration: InputDecoration(border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(7),
+                borderSide: BorderSide(color: Colors.white)
+              ),
+              hintText: "Address",
+              hintStyle: GoogleFonts.inknutAntiqua(color:Colors.white.withOpacity(0.5)),
+              prefixIcon: Icon(Icons.location_on_outlined,color: Colors.white,)
+            
+              ),
+              
+              ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10,right: 20,top: 30),
+            child: TextFormField(
+              style: TextStyle(color: Colors.white),
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+            controller: PhoneController,
+            decoration: InputDecoration(border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(7),
+              borderSide: BorderSide(color: Colors.white)
+            ),
+            hintText: "Phone Number",
+            hintStyle: GoogleFonts.inknutAntiqua(color:Colors.white.withOpacity(0.5)),
+            prefixIcon: Icon(Icons.phone_sharp,color: Colors.white,)
+            ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10,right: 20,top: 30),
             child: TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
               controller: EmailController,
@@ -129,7 +170,7 @@ try {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 30,left: 10,right: 10),
+            padding: const EdgeInsets.only(left: 10,right: 20,top: 30),
             child: TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
               controller: NewPassController,
@@ -146,11 +187,11 @@ try {
               }
               return null;
             },
-            
+
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 30,left: 10,right: 10),
+            padding: const EdgeInsets.only(left: 10,right: 20,top: 30),
             child: TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
               controller: ConfirmPassController,
@@ -176,7 +217,7 @@ try {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 30),
-            child: SizedBox(height: 40,width: 200,
+            child: SizedBox(height: 50,width: 200,
               child: ElevatedButton(style:  ButtonStyle(shape: MaterialStatePropertyAll(
                 RoundedRectangleBorder(borderRadius:BorderRadius.circular(7),side: BorderSide(color: Colors.white) )),
                 backgroundColor: MaterialStatePropertyAll(Colors.amber[900])) ,onPressed: () async{
@@ -187,8 +228,27 @@ try {
                     password=NewPassController.text;
                   });
                   // Navigator.push(context, MaterialPageRoute(builder: (context)=>packages(indexnum: 0)));
-                  register();
+                 
+                 // Add data into collection or call addUser()
+                  register().then((uid) => 
+                  controller.addUser(UserModel(
+                    name: UserNameController.text, 
+                  email: EmailController.text, 
+                  phone: PhoneController.text, 
+                  address: AddressController.text,
+                  password: NewPassController.text
+                  ),
+                   uid),
+                  );
                   
+                  ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Sign up Success"))
+        );
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => packages(indexnum: 0,),
+            ));
 
                 }
                

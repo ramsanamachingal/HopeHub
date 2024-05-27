@@ -4,14 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 // import 'package:hopehub/user/giverat.dart';
 import 'package:quickalert/quickalert.dart';
 
-class chatting extends StatefulWidget {
-  const chatting({super.key});
+class drchat extends StatefulWidget {
+  const drchat({super.key});
 
   @override
-  State<chatting> createState() => _chattingState();
+  State<drchat> createState() => _chattingState();
 }
 
-class _chattingState extends State<chatting> {
+class _chattingState extends State<drchat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,34 +21,8 @@ class _chattingState extends State<chatting> {
         leading: Center(child: Padding(
           padding: const EdgeInsets.only(top: 20),
           child: IconButton(onPressed: (){
-           
-            showDialog(
-              
-              context: context, builder: (context)=>AlertDialog(actions: [
-              RatingBar.builder(
-                initialRating: 0,
-                minRating: 1,
-                direction: Axis.horizontal,
-                allowHalfRating: true,
-                itemCount: 5,
-                itemPadding: EdgeInsets.symmetric(horizontal: 4),
-                itemBuilder: (context,_)=>Icon(Icons.star,color: Colors.amber,), onRatingUpdate: (rating){
-                  print(rating);
-                }),
-              TextButton(onPressed: (){
-                Navigator.of(context).pop();
-              }, child: Text("Submit"))
-            ],
-            title: Text("Enter Your Rating",style: GoogleFonts.inknutAntiqua(fontSize:20),),
+           Navigator.pop(context);
             
-
-            
-            
-            
-            
-            )
-            
-            );
             
           },
            icon: Icon(Icons.cancel,color: Colors.white,size: 40,),)

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:hopehub/user/home.dart';
 import 'package:hopehub/user/payment.dart';
+import 'package:hopehub/user/prescription.dart';
 import 'package:hopehub/user/profilepage.dart';
 import 'package:hopehub/user/schedule.dart';
 
@@ -15,11 +16,10 @@ class packages extends StatefulWidget {
 
 class _packagesState extends State<packages> {
  final _pages=[
-    // const logo(),
-    // project(),
+    
     const HomePage(),
     const schedle(),
-    const pay(),
+    const Prescription(),
     const ProfilePage(),
     
   ];
@@ -59,7 +59,7 @@ Widget mynav({
       backgroundColor: Colors.grey[850],),
        BottomNavigationBarItem(icon: const Icon(Icons.pending_actions_rounded),label: "Schedule",
       backgroundColor: Colors.grey[850],),
-       BottomNavigationBarItem(icon: const Icon(Icons.payment_outlined),label: "Payment",
+       BottomNavigationBarItem(icon: const Icon(Icons.contact_page_outlined),label: "Prescription",
       backgroundColor: Colors.grey[850],),
        BottomNavigationBarItem(icon: const Icon(Icons.person),label: "Profile",
       backgroundColor: Colors.grey[850],)

@@ -50,7 +50,7 @@ class _forgotState extends State<forgot> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(7),
                         borderSide: BorderSide(color: Colors.white)),
-                    hintText: "Type Email or phone",
+                    hintText: "Type Email ",
                     hintStyle: GoogleFonts.inknutAntiqua(
                         color: Colors.white.withOpacity(0.5))),
               ),

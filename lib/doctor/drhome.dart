@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hopehub/doctor/drchat.dart';
 import 'package:hopehub/user/chatting.dart';
 
 import 'package:hopehub/doctor/drpro.dart';
@@ -302,7 +303,8 @@ class _drhomeState extends State<drhome> {
                                               padding: const EdgeInsets.only(top: 15),
                                               child: Row(
                                                 children: [
-                                                 ElevatedButton(style: ButtonStyle(shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(7),side: BorderSide(color: Colors.white))),backgroundColor: MaterialStatePropertyAll(Colors.amber[900])),onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>chatting()));}, child: Text("Accept", style: GoogleFonts.inknutAntiqua(color:Colors.white,fontSize:15),)),
+                                                 ElevatedButton(style: ButtonStyle(shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(7),side: BorderSide(color: Colors.white))),backgroundColor: MaterialStatePropertyAll(Colors.amber[900])),
+                                                 onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>drchat()));}, child: Text("Accept", style: GoogleFonts.inknutAntiqua(color:Colors.white,fontSize:15),)),
                                                  Padding(
                                                    padding: const EdgeInsets.only(left: 10),
                                                    child: ElevatedButton(style: ButtonStyle(shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(7),side: BorderSide(color: Colors.white))),backgroundColor: MaterialStatePropertyAll(Colors.amber[900])),onPressed: (){}, child: Text("Reject", style: GoogleFonts.inknutAntiqua(color:Colors.white,fontSize:15),)),
@@ -322,36 +324,37 @@ class _drhomeState extends State<drhome> {
           )
         ],
       ),
-      // bottomNavigationBar: BottomNavigationBar(showSelectedLabels: true,
-      // type: BottomNavigationBarType.fixed,
-      // currentIndex: 0,
-      // selectedItemColor: Colors.amber[900],
+      bottomNavigationBar: BottomNavigationBar(showSelectedLabels: true,
+      type: BottomNavigationBarType.fixed,
+      currentIndex: 0,
+      selectedItemColor: Colors.amber[900],
 
-      // items: [
-      //   BottomNavigationBarItem(icon: Icon(Icons.home,color: Colors.amber[900],size: 30,),
-      //   label: "Home"
-      //   ),
-      //   BottomNavigationBarItem(icon: Icon(Icons.contact_page_outlined,color: Colors.white,size: 30,),
-      //   label: "Report"
-      //   ),
-      //   BottomNavigationBarItem(icon: Icon(Icons.person,color: Colors.white,size: 30,),
-      //   label: "Profile"
-      //   ),
+      items: [
+        BottomNavigationBarItem(icon: Icon(Icons.home,color: Colors.amber[900],size: 30,),
+        label: "Home"
+        ),
+        BottomNavigationBarItem(icon: Icon(Icons.contact_page_outlined,color: Colors.white,size: 30,),
+        label: "Report",
+        
+        ),
+        BottomNavigationBarItem(icon: Icon(Icons.person,color: Colors.white,size: 30,),
+        label: "Profile"
+        ),
 
-      // ],backgroundColor: Colors.grey[850],
-      // onTap: (index) {
-      //   switch(index){
-      //     case 0:
-      //     Navigator.push(context, MaterialPageRoute(builder: (context)=>drhome()));
-      //     case 1:
-      //     Navigator.push(context, MaterialPageRoute(builder: (context)=>drreport()));
-      //     case 2:
-      //      Navigator.push(context, MaterialPageRoute(builder: (context)=>drprofile()));
+      ],backgroundColor: Colors.grey[850],
+      onTap: (index) {
+        switch(index){
+          case 0:
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>drhome()));
+          case 1:
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>drreport()));
+          case 2:
+           Navigator.push(context, MaterialPageRoute(builder: (context)=>drprofile()));
            
 
-      //   }
-      // },
-      // ),
+        }
+      },
+      ),
 
       
     );

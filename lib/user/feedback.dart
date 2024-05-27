@@ -1,17 +1,24 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hopehub/Model/user_model.dart';
 
-class reviews extends StatefulWidget {
-  const reviews({super.key});
+class feedback extends StatefulWidget {
+  const feedback({super.key});
 
   @override
-  State<reviews> createState() => _reviewsState();
+  State<feedback> createState() => _feedbackState();
 }
 
-class _reviewsState extends State<reviews> {
+class _feedbackState extends State<feedback> {
+  final _firestore=FirebaseFirestore.instance;
+  final _auth=FirebaseAuth.instance;
+  //final emailController=TextEditingController(text: );
   @override
   Widget build(BuildContext context) {
+    String id =_auth.currentUser!.uid;
     return Scaffold(
       appBar: AppBar(leading: IconButton(onPressed: (){Navigator.pop(context);}, icon: Icon(Icons.cancel,color: Colors.white,size: 35,),),
       bottom: PreferredSize(preferredSize: Size.fromHeight(20), child: Divider()),
@@ -28,12 +35,27 @@ class _reviewsState extends State<reviews> {
           height: 500,
           width: 340,
           
-          child: Column(children: [Padding(
+          child: Column(children: [
+            StreamBuilder(
+              stream: _firestore.collection('user new').doc(id).snapshots(), 
+              builder: (context,snapshot){
+                UserModel.fromData(snapshot.data!.data()!);
+
+                if(snapshot.connectionState == ConnectionState.waiting){
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                  
+
+                  
+                }
+                return Padding(
             padding: const EdgeInsets.only(top: 80,left: 5),
             child: SizedBox(
               height: 50,
               width: 300,
-              child: TextField(
+              child: TextFormField(
+                
                 style: TextStyle(color: Colors.white),
               decoration: InputDecoration(border: OutlineInputBorder(borderRadius: BorderRadius.circular(7),borderSide: BorderSide(color: Colors.white)),
               hintText: "E Mail",
@@ -43,8 +65,10 @@ class _reviewsState extends State<reviews> {
                       
                       ),
             ),
-          ),
+          );
 
+              }),
+            
           Padding(
             padding: const EdgeInsets.only(top: 20),
             child: Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(7),border: Border.all(width: 1,color: Colors.white),color: Colors.black,),
@@ -56,7 +80,7 @@ class _reviewsState extends State<reviews> {
               
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(border: InputBorder.none,
-                hintText: "Review",
+                hintText: "feedback",
                 hintStyle: GoogleFonts.inknutAntiqua(color:Colors.white.withOpacity(0.5),fontSize:15)
                 ) ,
                 maxLines: 5,

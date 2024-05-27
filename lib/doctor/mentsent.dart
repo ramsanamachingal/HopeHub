@@ -22,7 +22,7 @@ class _mentsentState extends State<mentsent> {
         }, icon: Icon(Icons.cancel,color: Colors.white,size: 30,)),
         ),
         backgroundColor: Colors.grey[900],
-        body: Expanded(child: ListView.builder(itemCount: 7,itemBuilder: (context, index) {
+        body: Expanded(child: ListView.builder(itemCount: 3,itemBuilder: (context, index) {
          return Padding(padding: EdgeInsets.all(10),
          child: Container(height: 230,width: 350,
          decoration: BoxDecoration(borderRadius: BorderRadius.circular(7),border: Border.all(width: 1,color: Colors.white), color: Colors.black,),

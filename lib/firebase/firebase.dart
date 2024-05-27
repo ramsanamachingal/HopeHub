@@ -1,17 +1,17 @@
-import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class FirebaseFirestore extends StatefulWidget {
-  static var instance;
+class firebaseHelper{
+  final _firebase=FirebaseFirestore.instance;
+  Future addfirebase(
+    Map<String,dynamic>registereduserinfomap,String userid)async
 
-  const FirebaseFirestore({super.key});
+    {
+      return _firebase
+      .collection('firebase')
+      .doc(userid)
+      .set(registereduserinfomap);
 
-  @override
-  State<FirebaseFirestore> createState() => _FirebaseFirestoreState();
-}
+    }
+  
 
-class _FirebaseFirestoreState extends State<FirebaseFirestore> {
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
 }

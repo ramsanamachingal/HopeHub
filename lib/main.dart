@@ -4,16 +4,23 @@ import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hopehub/admin/adhome.dart';
 import 'package:hopehub/business_logic/firebase_options.dart';
-import 'package:hopehub/user/home.dart';
+import 'package:hopehub/doctor/drhome.dart';
+import 'package:hopehub/login/login1.dart';
+import 'package:hopehub/login/loginpage.dart';
+import 'package:hopehub/login/logo.dart';
+import 'package:hopehub/login/sign_in.dart';
+// import 'package:hopehub/user/home.dart';
 // import 'package:hopehub/appbar.dart';
 // import 'package:hopehub/demo.dart';
-import 'package:hopehub/login/logo.dart';
-import 'package:hopehub/login/loginpage.dart';
-import 'package:hopehub/user/profilepage.dart';
+// import 'package:hopehub/login/logo.dart';
+// import 'package:hopehub/login/loginpage.dart';
+// import 'package:hopehub/user/profilepage.dart';
 
 
 Future<void> main()async {
+  
     WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
@@ -35,9 +42,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 63, 8, 80)),
         useMaterial3: true,
       ),
-      home: const logo(),
-      // home: (packages(indexnum: 0)),
-      // home: packages(indexnum: 0,)
+      home: logo(),
+      // home: drhome(),
     );
   }
 }

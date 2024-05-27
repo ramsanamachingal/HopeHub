@@ -212,36 +212,36 @@ class _drprofileState extends State<drprofile> {
         ],
       ),),
 
-      // bottomNavigationBar: BottomNavigationBar(showSelectedLabels: true,
-      // type: BottomNavigationBarType.fixed,
-      // currentIndex: 2,
-      // selectedItemColor: Colors.amber[900],
+      bottomNavigationBar: BottomNavigationBar(showSelectedLabels: true,
+      type: BottomNavigationBarType.fixed,
+      currentIndex: 2,
+      selectedItemColor: Colors.amber[900],
 
-      // items: [
-      //   BottomNavigationBarItem(icon: Icon(Icons.home,color: Colors.white,size: 30,),
-      //   label: "Home"
-      //   ),
-      //   BottomNavigationBarItem(icon: Icon(Icons.contact_page_outlined,color: Colors.white,size: 30,),
-      //   label: "Report"
-      //   ),
-      //   BottomNavigationBarItem(icon: Icon(Icons.person,color: Colors.amber[900],size: 30,),
-      //   label: "Profile"
-      //   ),
+      items: [
+        BottomNavigationBarItem(icon: Icon(Icons.home,color: Colors.white,size: 30,),
+        label: "Home"
+        ),
+        BottomNavigationBarItem(icon: Icon(Icons.contact_page_outlined,color: Colors.white,size: 30,),
+        label: "Report"
+        ),
+        BottomNavigationBarItem(icon: Icon(Icons.person,color: Colors.amber[900],size: 30,),
+        label: "Profile"
+        ),
 
-      // ],backgroundColor: Colors.grey[850],
-      // onTap: (index) {
-      //   switch(index){
-      //     case 0:
-      //     Navigator.push(context, MaterialPageRoute(builder: (context)=>drhome()));
-      //     case 1:
-      //     Navigator.push(context, MaterialPageRoute(builder: (context)=>drreport()));
-      //     case 2:
-      //      Navigator.push(context, MaterialPageRoute(builder: (context)=>drprofile()));
+      ],backgroundColor: Colors.grey[850],
+      onTap: (index) {
+        switch(index){
+          case 0:
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>drhome()));
+          case 1:
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>drreport()));
+          case 2:
+           Navigator.push(context, MaterialPageRoute(builder: (context)=>drprofile()));
            
 
-      //   }
-      // },
-      // ),
+        }
+      },
+      ),
 
 
 

@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hopehub/Model/dr_model.dart';
 import 'package:hopehub/user/booking.dart';
 import 'package:hopehub/user/connection.dart';
 import 'package:hopehub/user/menu.dart';
@@ -14,9 +17,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _firestore =FirebaseFirestore.instance;
+  final _auth=FirebaseAuth.instance;
    //int selectColor = 0;
   @override
   Widget build(BuildContext context) {
+    String id = _auth.currentUser!.uid;
     return  Scaffold(
        backgroundColor: Colors.grey[850],
       drawer: const menuss(),
@@ -103,10 +109,25 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          Expanded(
+StreamBuilder<QuerySnapshot>(
+  stream: _firestore.collection('doctor').snapshots(),
+   builder: (context,snapshot){
+    if(snapshot.connectionState==ConnectionState.waiting){
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    if (!snapshot.hasData || snapshot.data!.docs.isEmpty){
+      return Center(
+        child: Text('No data available',style: TextStyle(color: Colors.white),),
+      );
+    }
+    var doctors=snapshot.data!.docs.map((doc) => Drmodel.fromData(doc.data()as Map<String,dynamic>)).toList();
+   return Expanded(
             child: ListView.builder(
-              itemCount: 10,
+              itemCount: doctors.length,
               itemBuilder: (context, index) {
+                var drmodel=doctors[index];
                 return Padding(
                   padding: const EdgeInsets.all(10),
                   child: GestureDetector(
@@ -129,9 +150,20 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(10),
-                            child: Image.asset(
-                              "assets/dr3.png",
-                              scale: 1.3,
+                            child: Column(
+                              children:[Image.asset(
+                                "assets/dr3.png",
+                                scale: 1.3,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10),
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.star,size: 20,color: Colors.amber,), Icon(Icons.star,size: 20,color: Colors.amber,), Icon(Icons.star,size: 20,color: Colors.amber,), Icon(Icons.star,size: 20,), Icon(Icons.star,size: 20,),
+                                  ],
+                                ),
+                              )
+                              ] 
                             ),
                           ),
                           Padding(
@@ -140,9 +172,9 @@ class _HomePageState extends State<HomePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 30),
+                                  padding: const EdgeInsets.only(top: 20),
                                   child: Text(
-                                    "DR.Rose",
+                                    drmodel.name,
                                     style: GoogleFonts.inknutAntiqua(
                                         color: Colors.white, fontSize: 15),
                                   ),
@@ -150,23 +182,20 @@ class _HomePageState extends State<HomePage> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 10),
                                   child: Text(
-                                    "Clinical Psychologist",
+                                    drmodel.qualification,
                                     style: GoogleFonts.inknutAntiqua(
                                         color: Colors.white, fontSize: 15),
                                   ),
                                 ),
                                 Row(
                                   children: [
-                                    const Icon(
-                                      Icons.star,
-                                      color: Colors.amber,
-                                    ),
+                                    Image.asset("assets/Warranty.png"),
                                     Padding(
                                       padding: const EdgeInsets.only(left: 10),
                                       child: SizedBox(
                                           width: 150,
                                           child: Text(
-                                            "Love and family",
+                                            drmodel.expert,
                                             style: GoogleFonts.inknutAntiqua(
                                                 color: Colors.white,
                                                 fontSize: 15),
@@ -186,7 +215,7 @@ class _HomePageState extends State<HomePage> {
                                         padding:
                                             const EdgeInsets.only(right: 20),
                                         child: Text(
-                                          "English,Hindi",
+                                          drmodel.language,
                                           style: GoogleFonts.inknutAntiqua(
                                               color: Colors.white,
                                               fontSize: 15),
@@ -205,7 +234,10 @@ class _HomePageState extends State<HomePage> {
                 );
               },
             ),
-          )
+          );
+   })
+
+          
         ],
       ),
 

@@ -10,7 +10,7 @@ import 'package:hopehub/user/notification.dart';
 import 'package:hopehub/user/payment.dart';
 
 import 'package:hopehub/user/profilepage.dart';
-import 'package:hopehub/user/review.dart';
+import 'package:hopehub/user/feedback.dart';
 import 'package:hopehub/user/settings.dart';
 
 class mentsche extends StatefulWidget {
@@ -75,7 +75,7 @@ Divider()
   ),
   Divider(),
   ListTile(
-    onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>reviews()));},
+    onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>feedback()));},
     leading: Icon(Icons.person_add_alt_1,size: 30,),
     iconColor: Colors.amber[900],
     title: Text("Review",style: GoogleFonts.inknutAntiqua(color:Colors.white,fontSize:15,)),
