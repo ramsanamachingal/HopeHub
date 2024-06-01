@@ -1,39 +1,40 @@
-class UserModel
-{
+
+//collection
+class UserModel {
   String name;
   String email;
   String phone;
   String address;
-  String password;
+  String? imageUrl;
   String? id;
 
   UserModel({
     required this.name,
-     required this.email,
-     required this.phone,
-     required this.address,
-     required this.password,
-     this.id
-     });
+    required this.email,
+    required this.phone,
+    required this.address,
+    this.imageUrl,
+    this.id,
+  });
 
-  Map<String,dynamic> data(docId)=>
-  {
-    "name":name,
-    "email":email,
-    "phone":phone,
-    "address":address,
-    "password":password,
-    "id":docId
-  };
 
-  factory UserModel.fromData(Map<String,dynamic> i)
-  {
+  Map<String, dynamic> toMap() => {
+        "name": name,
+        "email": email,
+        "id": id,
+        "phone": phone,
+        "address":address,
+        "imageUrl": imageUrl,
+      };
+
+  factory UserModel.fromMap(Map<String, dynamic> data) {
     return UserModel(
-      name: i["name"], 
-    email: i["email"], 
-    phone: i["phone"], 
-    address: i["address"],
-    password: i["password"]
+      name: data["name"],
+      email: data["email"],
+      phone: data["phone"],
+      address: data["address"],
+      imageUrl: data["imageUrl"],
+      id: data["id"],
     );
   }
 }

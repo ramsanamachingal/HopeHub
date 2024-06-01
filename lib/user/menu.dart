@@ -4,7 +4,9 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hopehub/Model/user_model.dart';
 import 'package:hopehub/login/login1.dart';
 import 'package:hopehub/login/loginpage.dart';
 import 'package:hopehub/user/connection.dart';
@@ -33,16 +35,21 @@ class _menussState extends State<menuss> {
     String id=_auth.currentUser!.uid;
     return Drawer(
       backgroundColor: Colors.black,
-      child: StreamBuilder(stream: _firestore.collection('user new').doc(id).snapshots(),
-       builder: (context,snapshot){
+      child:
+      
+  //     StreamBuilder(stream: _firestore.collection('user').doc(id).snapshots(),
+  //      builder: (context,snapshot){
+  //      UserModel userModel=UserModel.fromMap(snapshot.data!.data()!);
+  //      String image=userModel.imageUrl.toString();
 
-   if(snapshot.connectionState == ConnectionState.waiting){
-    return Center(child: CircularProgressIndicator(),);
+  //  if(snapshot.connectionState == ConnectionState.waiting){
+  //   return Center(child: CircularProgressIndicator(),);
 
-   }
+  //  }
 
-        DocumentSnapshot data= snapshot.data!;
-          return   ListView(
+  //       DocumentSnapshot data= snapshot.data!;
+  //         return   
+          ListView(
           children: [
             // UserAccountsDrawerHeader(accountName: Text("Catherine"), accountEmail: Text("catherine@gmail.com"),decoration:BoxDecoration(color: Colors.red) ,),
 
@@ -51,25 +58,35 @@ class _menussState extends State<menuss> {
               child: CircleAvatar(
                 radius: 45,
                 backgroundColor: Colors.white,
-                child:StreamBuilder(stream: _firestore.collection('image').doc(id).snapshots(),
+                child:StreamBuilder(stream: _firestore.collection('user').doc(id).snapshots(),
                  builder: (context,snapshot)
                  {
-                  DocumentSnapshot image=snapshot.data!;
-                  return   CircleAvatar(
+                  UserModel userModel=UserModel.fromMap(snapshot.data!.data()!);
+              String image=userModel.imageUrl.toString();
+                  // DocumentSnapshot image=snapshot.data!;
+                  return   
+                  CircleAvatar(
                   radius: 40,
-                  backgroundImage: AssetImage("assets/user.jpg"),
+                  backgroundImage:NetworkImage(image)
                 );
                  })
                 
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10, left: 10),
-              child: Text(
-                "ramsana",
-                style: GoogleFonts.inknutAntiqua(
-                    color: Colors.white, fontSize: 18),
-              ),
+            StreamBuilder(stream: FirebaseFirestore.instance.collection('user').doc(id).snapshots(),
+            builder: (context,snapshot){
+              UserModel userModel=UserModel.fromMap(snapshot.data!.data()!);
+              //String image=userModel.imageUrl.toString();
+              return  Padding(
+                padding: const EdgeInsets.only(top: 10, left: 10),
+                child: Text(
+                  userModel.name,
+                  style: GoogleFonts.inknutAntiqua(
+                      color: Colors.white, fontSize: 18),
+                ),
+              );
+            },
+             
             ),
 
             const SizedBox(height: 30,),
@@ -199,9 +216,9 @@ class _menussState extends State<menuss> {
             ),
             const Divider(),
           ],
-        );
-       }
-       )
+        )
+      //  }
+      //  )
     
     );
   }

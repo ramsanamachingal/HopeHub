@@ -113,83 +113,118 @@ class _ProfilePageState extends State<ProfilePage> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              // Stack(children: [
-              //   Container(
-              //     height: 250,width: 360,
+              Stack(
+                children: [
+                  StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection("user")
+                          .doc(id)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        UserModel userModel =
+                            UserModel.fromMap(snapshot.data!.data()!);
+                        String image = userModel.imageUrl.toString();
+                        // return  Container(
+                        // height: 250,width: 360,
 
-              //     decoration: BoxDecoration(
-              //       image: DecorationImage(
-              //         fit: BoxFit.cover,
-              //         image: selectedbg != null ?
-              //         FileImage(selectedbg!):
-              //         const AssetImage("assets/Rectangle 24.jpg") as ImageProvider <Object>
+                        // decoration: BoxDecoration(
+                        //   image: DecorationImage(
+                        //     fit: BoxFit.cover,
+                        //     image: selectedbg != null ?
+                        //     FileImage(selectedbg!):
+                        //     const AssetImage("assets/Rectangle 24.jpg") as ImageProvider <Object>
 
-              //       ),
+                        //   ),
 
-              //       color: Colors.white),
-              //       ),
-              //      Padding(
-              // padding: const EdgeInsets.only(left: 310,top: 235 ),
-              // child:Container(height: 35,width: 35,decoration: const BoxDecoration(shape: BoxShape.circle,color: Color.fromARGB(149, 255, 255, 255)),
-              // child: IconButton(onPressed: ()async{
-              //   await _backgroundImageGallery();
-              // }, icon:const Icon(Icons.camera_alt_outlined,color: Colors.black,size: 20,) ),)
-              //           ),
-              //            Padding(
-              // padding: const EdgeInsets.only(top: 192,left: 120),
-              // child: Container(
-              //   decoration: BoxDecoration(
-              //     image: DecorationImage(
-              //       fit: BoxFit.cover,
-              //       image: selectedImage != null ?
-              //       FileImage(selectedImage!):
-              //       const AssetImage('assets/image 4.jpg') as ImageProvider<Object>
-              //       ),
-              //     shape: BoxShape.circle,
-              //     color: Colors.white),
-              //     height: 150,
-              //     width: 150,
-              // child:Padding(
-              //             padding: const EdgeInsets.only(top: 85,left: 115),
-              //             child: Container(height: 15,width: 15,decoration: const BoxDecoration(shape: BoxShape.circle,color: Color.fromARGB(149, 255, 255, 255)),
-              //               child: Padding(
-              //                 padding: const EdgeInsets.only(right: 20),
-              //                 child: IconButton(onPressed: ()async{
-              //                   _pickedImageGallery().then((value) async {
-              //                     SettableMetadata metadata =SettableMetadata(contentType: "image/jpg");
-              //                     final currenttime = TimeOfDay.now();
+                        //   color: Colors.white),
+                        //   );
+                        return Stack(children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 50),
+                            child: CircleAvatar(
+                              radius: 50,
+                              backgroundImage: selectedImage != null
+                                  ? FileImage(selectedImage!)
+                                  : NetworkImage(image) as ImageProvider,
+                              // NetworkImage(image),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 50, left: 70),
+                            child: CircleAvatar(
+                              radius: 20,
+                              backgroundColor: Colors.white,
+                              child: IconButton(
+                                  onPressed: _pickedImageGallery,
+                                  icon: Icon(
+                                    Icons.camera_alt_outlined,
+                                    color: Colors.blue,
+                                  )),
+                            ),
+                          )
+                        ]);
+                      }),
 
-              //                     UploadTask uploadTask=FirebaseStorage.instance
-              //                     .ref()
-              //                     .child("profileimage/profile$currenttime")
-              //                     .putFile(selectedImage!,metadata);
+                  //      Padding(
+                  // padding: const EdgeInsets.only(left: 310,top: 235 ),
+                  // child:Container(height: 35,width: 35,decoration: const BoxDecoration(shape: BoxShape.circle,color: Color.fromARGB(149, 255, 255, 255)),
+                  // child: IconButton(onPressed: ()async{
+                  //   await _backgroundImageGallery();
+                  // }, icon:const Icon(Icons.camera_alt_outlined,color: Colors.black,size: 20,) ),)
+                  //           ),
+                  //            Padding(
+                  // padding: const EdgeInsets.only(top: 192,left: 120),
+                  // child: Container(
+                  //   decoration: BoxDecoration(
+                  //     image: DecorationImage(
+                  //       fit: BoxFit.cover,
+                  //       image: selectedImage != null ?
+                  //       FileImage(selectedImage!):
+                  //       const AssetImage('assets/image 4.jpg') as ImageProvider<Object>
+                  //       ),
+                  //     shape: BoxShape.circle,
+                  //     color: Colors.white),
+                  //     height: 150,
+                  //     width: 150,
+                  // child:Padding(
+                  //             padding: const EdgeInsets.only(top: 85,left: 115),
+                  //             child: Container(height: 15,width: 15,decoration: const BoxDecoration(shape: BoxShape.circle,color: Color.fromARGB(149, 255, 255, 255)),
+                  //               child: Padding(
+                  //                 padding: const EdgeInsets.only(right: 20),
+                  //                 child: IconButton(onPressed: ()async{
+                  //                   _pickedImageGallery().then((value) async {
+                  //                     SettableMetadata metadata =SettableMetadata(contentType: "image/jpg");
+                  //                     final currenttime = TimeOfDay.now();
 
-              //                     TaskSnapshot snapshot=await uploadTask;
-              //                     await snapshot.ref.getDownloadURL().then((url) {
-              //                       String id=randomString(10);
-              //                       FirebaseFirestore.instance
-              //                       .collection('image')
-              //                       .doc(id)
-              //                       .update({'image':url});
-              //                     } );
+                  //                     UploadTask uploadTask=FirebaseStorage.instance
+                  //                     .ref()
+                  //                     .child("profileimage/profile$currenttime")
+                  //                     .putFile(selectedImage!,metadata);
 
-              //                   });
-              //                 },icon:const Icon(Icons.camera_alt_outlined,color: Colors.black,size: 20,)),
-              //               ),
-              //             ),
-              //           ),
+                  //                     TaskSnapshot snapshot=await uploadTask;
+                  //                     await snapshot.ref.getDownloadURL().then((url) {
+                  //                       String id=randomString(10);
+                  //                       FirebaseFirestore.instance
+                  //                       .collection('image')
+                  //                       .doc(id)
+                  //                       .update({'image':url});
+                  //                     } );
 
-              // ),
-              //           )
+                  //                   });
+                  //                 },icon:const Icon(Icons.camera_alt_outlined,color: Colors.black,size: 20,)),
+                  //               ),
+                  //             ),
+                  //           ),
 
-              //           ],
-              //         ),
-
+                  // ),
+                  //           )
+                ],
+              ),
               StreamBuilder(
-                  stream: _firestore.collection('user new').doc(id).snapshots(),
+                  stream: _firestore.collection('user').doc(id).snapshots(),
                   builder: (context, snapshot) {
                     UserModel userModel =
-                        UserModel.fromData(snapshot.data!.data()!);
+                        UserModel.fromMap(snapshot.data!.data()!);
 
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       const Center(
@@ -252,7 +287,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     );
                   }),
-
               Padding(
                 padding: const EdgeInsets.only(left: 50, top: 30),
                 child: Row(

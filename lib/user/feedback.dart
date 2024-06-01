@@ -39,7 +39,7 @@ class _feedbackState extends State<feedback> {
             StreamBuilder(
               stream: _firestore.collection('user new').doc(id).snapshots(), 
               builder: (context,snapshot){
-                UserModel.fromData(snapshot.data!.data()!);
+                UserModel.fromMap(snapshot.data!.data()!);
 
                 if(snapshot.connectionState == ConnectionState.waiting){
                   return Center(

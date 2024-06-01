@@ -122,7 +122,7 @@ StreamBuilder<QuerySnapshot>(
         child: Text('No data available',style: TextStyle(color: Colors.white),),
       );
     }
-    var doctors=snapshot.data!.docs.map((doc) => Drmodel.fromData(doc.data()as Map<String,dynamic>)).toList();
+    var doctors=snapshot.data!.docs.map((doc) => Drmodel.fromMap(doc.data()as Map<String,dynamic>)).toList();
    return Expanded(
             child: ListView.builder(
               itemCount: doctors.length,
@@ -151,10 +151,11 @@ StreamBuilder<QuerySnapshot>(
                           Padding(
                             padding: const EdgeInsets.all(10),
                             child: Column(
-                              children:[Image.asset(
-                                "assets/dr3.png",
-                                scale: 1.3,
-                              ),
+                              children:[
+                              //   Image.asset(
+                              //   "assets/dr3.png",
+                              //   scale: 1.3,
+                              // ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 10),
                                 child: Row(

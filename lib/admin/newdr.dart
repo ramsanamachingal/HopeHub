@@ -28,10 +28,13 @@ class newdr extends StatefulWidget {
   State<newdr> createState() => _newdrState();
 }
 
-// File? selectedImage;
-Adddrcontroller adddrcontroller = Adddrcontroller();
+File? selectedImage;
+
 
 class _newdrState extends State<newdr> {
+
+  Adddrcontroller adddrcontroller = Adddrcontroller();
+
   final _auth = FirebaseAuth.instance;
   final DrnameController = TextEditingController();
   final QualificationController = TextEditingController();
@@ -45,35 +48,90 @@ class _newdrState extends State<newdr> {
 
   String email = "", password = "";
 
-  Future drregister() async {
-    try {
-      return await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password)
-          .then((value) => value.user!.uid);
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('password is weak')));
-      } else if (e.code == 'email-already-in-use') {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("email is already in use")));
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    Future<void> _pickedImageGallery() async {
-      final pickedImage =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (pickedImage == null) return;
+  Future<void> _pickImageFromGallery() async {
+    final pickedImage = await adddrcontroller.pickImage();
+    if (pickedImage != null) {
       setState(() {
         selectedImage = File(pickedImage.path);
       });
     }
+  }
 
+  Future<void> drregister() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        email = EmailController.text;
+        password = PasswordController.text;
+      });
+
+      try {
+        final userCredential = await _auth.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        final uid = userCredential.user!.uid;
+
+        String imageUrl = '';
+        if (selectedImage != null) {
+          imageUrl =
+              await adddrcontroller.uploadImage(XFile(selectedImage!.path));
+        }
+
+        final drmodel = Drmodel(
+            name: DrnameController.text,
+            qualification: QualificationController.text,
+            expert: ExpertController.text,
+            language: LanguageController.text,
+            phone: PhoneController.text,
+            email: EmailController.text,
+            password: PasswordController.text,
+            imageUrl: imageUrl);
+
+        await adddrcontroller.addDr(drmodel, uid,);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Doctor added successfully')),
+        );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => adhome()),
+        );
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Weak password')),
+          );
+        } else if (e.code == 'email-already-in-use') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('E-mail is already in use')),
+          );
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+  }
+
+  // Future drregister() async {
+  //   try {
+  //     return await FirebaseAuth.instance
+  //         .createUserWithEmailAndPassword(email: email, password: password)
+  //         .then((value) => value.user!.uid);
+  //   } on FirebaseAuthException catch (e) {
+  //     if (e.code == 'weak-password') {
+  //       ScaffoldMessenger.of(context)
+  //           .showSnackBar(SnackBar(content: Text('password is weak')));
+  //     } else if (e.code == 'email-already-in-use') {
+  //       ScaffoldMessenger.of(context)
+  //           .showSnackBar(SnackBar(content: Text("email is already in use")));
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.grey[850],
         body: SingleChildScrollView(
@@ -86,7 +144,7 @@ class _newdrState extends State<newdr> {
                     Padding(
                       padding: const EdgeInsets.only(left: 23, top: 100),
                       child: Container(
-                        height: 650,
+                        height: 750,
                         width: 350,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(7),
@@ -121,188 +179,127 @@ class _newdrState extends State<newdr> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 0),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // Padding(
-                                    //   padding: const EdgeInsets.only(
-                                    //       top: 80, left: 10),
-
-                                    //   child: Stack(
-                                    //     children: [
-                                    //       Container(
-                                    //         decoration: BoxDecoration(
-                                    //             image: DecorationImage(
-                                    //                 fit: BoxFit.cover,
-                                    //                 image: selectedImage != null
-                                    //                     ? FileImage(
-                                    //                         selectedImage!)
-                                    //                     :
-                                    //                     // NetworkImage('')
-                                    //                     AssetImage('')
-                                    //                         as ImageProvider<
-                                    //                             Object>),
-                                    //             shape: BoxShape.circle,
-                                    //             color: Colors.white),
-                                    //         height: 70,
-                                    //         width: 70,
-                                    //       ),
-                                    //       Padding(
-                                    //         padding: const EdgeInsets.only(
-                                    //             left: 55, top: 30),
-                                    //         child: Container(
-                                    //           height: 20,
-                                    //           width: 20,
-                                    //           decoration: BoxDecoration(
-                                    //               shape: BoxShape.circle,
-                                    //               // color: Colors.red
-                                    //               color: Color.fromARGB(
-                                    //                   149, 255, 255, 255)),
-                                    //           child: Center(
-                                    //             child: IconButton(
-                                    //                 onPressed: () async {
-                                    //                   _pickedImageGallery()
-                                    //                       .then((value) async {
-                                    //                     SettableMetadata
-                                    //                         metadata =
-                                    //                         SettableMetadata(
-                                    //                             contentType:
-                                    //                                 "image/jpg");
-                                    //                     final currenttime =
-                                    //                         TimeOfDay.now();
-
-                                    //                     UploadTask uploadTask =
-                                    //                         FirebaseStorage
-                                    //                             .instance
-                                    //                             .ref()
-                                    //                             .child(
-                                    //                                 "profileimage/profile$currenttime")
-                                    //                             .putFile(
-                                    //                                 selectedImage!,
-                                    //                                 metadata);
-
-                                    //                     TaskSnapshot snapshot =
-                                    //                         await uploadTask;
-                                    //                     await snapshot.ref
-                                    //                         .getDownloadURL()
-                                    //                         .then((url) {
-                                    //                       String id =
-                                    //                           FirebaseAuth
-                                    //                               .instance
-                                    //                               .currentUser!
-                                    //                               .uid;
-                                    //                       FirebaseFirestore
-                                    //                           .instance
-                                    //                           .collection(
-                                    //                               'image')
-                                    //                           .doc(id)
-                                    //                           .update({
-                                    //                         'image': url
-                                    //                       });
-                                    //                     });
-                                    //                   });
-                                    //                 },
-                                    //                 icon: Icon(
-                                    //                   Icons.camera_alt_outlined,
-                                    //                   color: Colors.black,
-                                    //                   size: 10,
-                                    //                 )),
-                                    //           ),
-                                    //         ),
-                                    //       ),
-                                    //     ],
-                                    //   ),
-                                    // ),
-
-                                    // CircleAvatar(
-                                    //   radius: 87,
-                                    //   backgroundColor: Colors.white,
-                                    //   child: CircleAvatar(
-                                    //     radius: 80,
-                                    //     backgroundImage: AssetImage(""),
-                                    //   ),
-                                    // ),
-
-                                    SizedBox(
-                                      width: 220,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(10),
-                                        child: Column(
-                                          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            TextFormField(
-                                              controller:
-                                                  QualificationController,
-                                              autovalidateMode: AutovalidateMode
-                                                  .onUserInteraction,
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                              decoration: InputDecoration(
-                                                  border: OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              7),
-                                                      borderSide: BorderSide(
-                                                          color: Colors.white)),
-                                                  hintText: "qualification",
-                                                  hintStyle:
-                                                      GoogleFonts.inknutAntiqua(
-                                                          color: Colors.white
-                                                              .withOpacity(0.5),
-                                                          fontSize: 15)),
-                                              validator: (value) {
-                                                if (value!.isEmpty) {
-                                                  return "Please enter the qualification";
-                                                }
-                                                return null;
-                                              },
-                                            ),
-                                            SizedBox(
-                                              height: 20,
-                                            ),
-                                            SizedBox(
-                                              height: 50,
-                                              width: 400,
-                                              child: TextFormField(
-                                                controller: ExpertController,
-                                                autovalidateMode:
-                                                    AutovalidateMode
-                                                        .onUserInteraction,
+                                child: SingleChildScrollView(scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 10),
+                                        child: CircleAvatar(
+                                          radius: 45,
+                                          backgroundImage: selectedImage != null
+                                              ? FileImage(selectedImage!)
+                                              : AssetImage("assets/image.png")
+                                                  as ImageProvider,
+                                          child: IconButton(
+                                              onPressed: _pickImageFromGallery,
+                                              icon: Icon(
+                                                Icons.camera_alt,
+                                                color: Colors.black,
+                                              )),
+                                        ),
+                                      ),
+                                      
+                                      // CircleAvatar(
+                                      //   radius: 87,
+                                      //   backgroundColor: Colors.white,
+                                      //   child: CircleAvatar(
+                                      //       radius: 80,
+                                      //       backgroundImage: selectedImage != null
+                                      //           ? FileImage(selectedImage!)
+                                      //           : AssetImage("assets/image.png")
+                                      //               as ImageProvider,
+                                      //       child: CircleAvatar(
+                                      //         radius: 23,
+                                      //         backgroundColor: Colors.white,
+                                      //         child: IconButton(
+                                      //             onPressed: _pickImageFromGallery,
+                                      //             icon: Icon(
+                                      //               Icons.camera_alt_outlined,
+                                      //               color: Colors.black,
+                                      //             )),
+                                      //       )),
+                                      // ),
+                                  
+                                      SizedBox(
+                                        width: 220,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10),
+                                          child: Column(
+                                            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              TextFormField(
+                                                controller:
+                                                    QualificationController,
+                                                autovalidateMode: AutovalidateMode
+                                                    .onUserInteraction,
                                                 style: TextStyle(
                                                     color: Colors.white),
                                                 decoration: InputDecoration(
                                                     border: OutlineInputBorder(
                                                         borderRadius:
-                                                            BorderRadius
-                                                                .circular(7),
-                                                        borderSide:
-                                                            BorderSide(
-                                                                color: Colors
-                                                                    .white)),
-                                                    hintText: "Expert",
+                                                            BorderRadius.circular(
+                                                                7),
+                                                        borderSide: BorderSide(
+                                                            color: Colors.white),),
+                                                    hintText: "qualification",
                                                     hintStyle:
-                                                        GoogleFonts
-                                                            .inknutAntiqua(
-                                                                color: Colors
-                                                                    .white
-                                                                    .withOpacity(
-                                                                        0.5),
-                                                                fontSize: 15)),
+                                                        GoogleFonts.inknutAntiqua(
+                                                            color: Colors.white
+                                                                .withOpacity(0.5),
+                                                            fontSize: 15)
+                                                            
+                                                            ),
                                                 validator: (value) {
                                                   if (value!.isEmpty) {
-                                                    return "Please enter doctor experts";
+                                                    return "Please enter the qualification";
                                                   }
                                                   return null;
                                                 },
                                               ),
-                                            ),
-                                            SizedBox(
-                                              height: 20,
-                                            ),
-                                            SizedBox(
-                                              height: 50,
-                                              width: 400,
-                                              child: TextFormField(
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                              SizedBox(
+                                                height: 50,
+                                                width: 400,
+                                                child: TextFormField(
+                                                  controller: ExpertController,
+                                                  autovalidateMode:
+                                                      AutovalidateMode
+                                                          .onUserInteraction,
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                  decoration: InputDecoration(
+                                                      border: OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(7),
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  color: Colors
+                                                                      .white)),
+                                                      hintText: "Expert",
+                                                      hintStyle:
+                                                          GoogleFonts
+                                                              .inknutAntiqua(
+                                                                  color: Colors
+                                                                      .white
+                                                                      .withOpacity(
+                                                                          0.5),
+                                                                  fontSize: 15)),
+                                                  validator: (value) {
+                                                    if (value!.isEmpty) {
+                                                      return "Please enter doctor experts";
+                                                    }
+                                                    return null;
+                                                  },
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                              TextFormField(maxLines: 3,
                                                 controller: LanguageController,
                                                 autovalidateMode:
                                                     AutovalidateMode
@@ -334,55 +331,51 @@ class _newdrState extends State<newdr> {
                                                   return null;
                                                 },
                                               ),
-                                            ),
-                                            SizedBox(
-                                              height: 20,
-                                            ),
-                                            SizedBox(
-                                              height: 50,
-                                              width: 400,
-                                              child: TextFormField(
-                                                controller: PhoneController,
-                                                autovalidateMode:
-                                                    AutovalidateMode
-                                                        .onUserInteraction,
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                                decoration: InputDecoration(
-                                                    border: OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(7),
-                                                        borderSide:
-                                                            BorderSide(
-                                                                color: Colors
-                                                                    .white)),
-                                                    hintText: "Phone number",
-                                                    hintStyle:
-                                                        GoogleFonts
-                                                            .inknutAntiqua(
-                                                                color: Colors
-                                                                    .white
-                                                                    .withOpacity(
-                                                                        0.5),
-                                                                fontSize: 15)),
-                                                validator: (value) {
-                                                  if (value!.isEmpty) {
-                                                    return "Enter the phone number";
-                                                  }
-                                                  return null;
-                                                },
-                                                keyboardType:
-                                                    TextInputType.number,
+                                              SizedBox(
+                                                height: 20,
                                               ),
-                                            ),
-                                            SizedBox(
-                                              height: 20,
-                                            ),
-                                            SizedBox(
-                                              height: 50,
-                                              width: 400,
-                                              child: TextFormField(
+                                              SizedBox(
+                                                height: 50,
+                                                width: 400,
+                                                child: TextFormField(
+                                                  controller: PhoneController,
+                                                  autovalidateMode:
+                                                      AutovalidateMode
+                                                          .onUserInteraction,
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                  decoration: InputDecoration(
+                                                      border: OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(7),
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  color: Colors
+                                                                      .white)),
+                                                      hintText: "Phone number",
+                                                      hintStyle:
+                                                          GoogleFonts
+                                                              .inknutAntiqua(
+                                                                  color: Colors
+                                                                      .white
+                                                                      .withOpacity(
+                                                                          0.5),
+                                                                  fontSize: 15)),
+                                                  validator: (value) {
+                                                    if (value!.isEmpty) {
+                                                      return "Enter the phone number";
+                                                    }
+                                                    return null;
+                                                  },
+                                                  keyboardType:
+                                                      TextInputType.number,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                              TextFormField(
                                                 controller: EmailController,
                                                 autovalidateMode:
                                                     AutovalidateMode
@@ -422,52 +415,52 @@ class _newdrState extends State<newdr> {
                                                 keyboardType:
                                                     TextInputType.emailAddress,
                                               ),
-                                            ),
-                                            SizedBox(
-                                              height: 20,
-                                            ),
-                                            SizedBox(
-                                              height: 50,
-                                              width: 400,
-                                              child: TextFormField(
-                                                controller: PasswordController,
-                                                autovalidateMode:
-                                                    AutovalidateMode
-                                                        .onUserInteraction,
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                ),
-                                                decoration: InputDecoration(
-                                                    border: OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(7),
-                                                        borderSide:
-                                                            BorderSide(
-                                                                color: Colors
-                                                                    .white)),
-                                                    hintText: "Password",
-                                                    hintStyle:
-                                                        GoogleFonts
-                                                            .inknutAntiqua(
-                                                                color: Colors
-                                                                    .white
-                                                                    .withOpacity(
-                                                                        0.5),
-                                                                fontSize: 15)),
-                                                validator: (value) {
-                                                  if (value!.isEmpty) {
-                                                    return "Enter the password";
-                                                  }
-                                                  return null;
-                                                },
+                                              SizedBox(
+                                                height: 20,
                                               ),
-                                            ),
-                                          ],
+                                              SizedBox(
+                                                height: 50,
+                                                width: 400,
+                                                child: TextFormField(
+                                                  controller: PasswordController,
+                                                  autovalidateMode:
+                                                      AutovalidateMode
+                                                          .onUserInteraction,
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                  decoration: InputDecoration(
+                                                      border: OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(7),
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  color: Colors
+                                                                      .white)),
+                                                      hintText: "Password",
+                                                      hintStyle:
+                                                          GoogleFonts
+                                                              .inknutAntiqua(
+                                                                  color: Colors
+                                                                      .white
+                                                                      .withOpacity(
+                                                                          0.5),
+                                                                  fontSize: 15)),
+                                                  validator: (value) {
+                                                    if (value!.isEmpty) {
+                                                      return "Enter the password";
+                                                    }
+                                                    return null;
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                               Align(
@@ -485,45 +478,7 @@ class _newdrState extends State<newdr> {
                                           backgroundColor:
                                               MaterialStatePropertyAll(
                                                   Colors.amber[900])),
-                                      onPressed: () async {
-                                        if (_formKey.currentState!.validate()) {
-                                          setState(() {
-                                            email = EmailController.text;
-                                            password = PasswordController.text;
-                                          });
-                                          drregister().then((uid) =>
-                                        
-                                              adddrcontroller.addDr(
-                                                  Drmodel(
-                                                      name:
-                                                          DrnameController.text,
-                                                      qualification:
-                                                          QualificationController
-                                                              .text,
-                                                      expert:
-                                                          ExpertController.text,
-                                                      language:
-                                                          LanguageController
-                                                              .text,
-                                                      phone:
-                                                          PhoneController.text,
-                                                      email:
-                                                          EmailController.text,
-                                                          password: 
-                                                          PasswordController.text),
-                                                          
-                                                  uid));
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                                  content: Text(
-                                                      'New doctor add successfully')));
-                                          Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      adhome()));
-                                        }
-                                      },
+                                      onPressed: drregister,
                                       child: Text(
                                         "Submit",
                                         style: GoogleFonts.inknutAntiqua(

@@ -6,6 +6,7 @@ class Drmodel {
   String phone;
   String email;
   String password;
+  String imageUrl;
   String? id;
 
   Drmodel({
@@ -16,9 +17,10 @@ class Drmodel {
     required this.phone,
     required this.email,
     required this.password,
+    required this.imageUrl,
     this.id
   });
-  Map<String,dynamic>data(docId)=>{
+  Map<String,dynamic>toMap()=>{
     "name":name,
     "qualification":qualification,
     "expert":expert,
@@ -26,16 +28,20 @@ class Drmodel {
     "phone":phone,
     "email":email,
     "password":password,
-    "id":docId
+    "imageUrl":imageUrl,
+    "id":id
+    
   };
-  factory Drmodel.fromData(Map<String,dynamic>i){
-    return Drmodel(name: i["name"],
-     qualification: i["qualification"],
-      expert: i["expert"], 
-      language: i["language"],
-       phone: i["phone"],
-        email: i["email"],
-        password: i["password"]
+  factory Drmodel.fromMap(Map<String,dynamic>data){
+    return Drmodel(name: data["name"],
+     qualification: data["qualification"],
+      expert: data["expert"], 
+      language: data["language"],
+       phone: data["phone"],
+        email: data["email"],
+        password: data["password"],
+        imageUrl: data["imageUrl"],
+        id: data["id"]
         );
   }
 }
