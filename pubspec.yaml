@@ -49,6 +49,12 @@ dependencies:
   firebase_storage: ^11.7.4
   image_picker: ^1.1.1
   fluttertoast: ^8.2.5
+  booking_calendar: ^1.1.10
+  intl: ^0.18.1
+  upi_india: ^3.0.1
+  http: ^1.2.1
+  videosdk: ^1.1.12
+  url_launcher: ^6.3.0
   
   
 
