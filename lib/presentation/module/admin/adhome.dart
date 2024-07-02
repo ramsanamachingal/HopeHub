@@ -9,6 +9,7 @@ import 'package:hopehub/presentation/module/admin/adment.dart';
 import 'package:hopehub/presentation/module/admin/admenu.dart';
 import 'package:hopehub/presentation/module/admin/adnotification.dart';
 import 'package:hopehub/presentation/module/admin/aduser.dart';
+import 'package:hopehub/presentation/module/admin/edit_doc.dart';
 import 'package:hopehub/presentation/module/admin/newdr.dart';
 import 'package:hopehub/presentation/module/admin/newment.dart';
 import 'package:image_picker/image_picker.dart';
@@ -62,16 +63,16 @@ class _adhomeState extends State<adhome> {
             style: GoogleFonts.inknutAntiqua(color: Colors.white, fontSize: 16),
           ),
           actions: [
-            IconButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const aduser()));
-                },
-                icon: const Icon(
-                  Icons.person,
-                  color: Colors.white,
-                  size: 30,
-                )),
+            // IconButton(
+            //     onPressed: () {
+            //       Navigator.push(context,
+            //           MaterialPageRoute(builder: (context) => const aduser()));
+            //     },
+            //     icon: const Icon(
+            //       Icons.person,
+            //       color: Colors.white,
+            //       size: 30,
+            //     )),
             IconButton(
                 onPressed: () {
                   Navigator.push(context,
@@ -285,7 +286,7 @@ class _adhomeState extends State<adhome> {
                                                         context,
                                                         MaterialPageRoute(
                                                             builder: (context) =>
-                                                                const newdr()));
+                                                                 EditDoctor(docID: drmodel.id!,email: drmodel.email,password: drmodel.password,)));
                                                   },
                                                   child: const Text(
                                                     "Edit",
@@ -315,7 +316,9 @@ class _adhomeState extends State<adhome> {
                                                             MaterialStatePropertyAll(
                                                                 Colors.amber[
                                                                     900])),
-                                                    onPressed: () {},
+                                                    onPressed: () {
+                                                      FirebaseFirestore.instance.collection("doctor").doc(drmodel.id).delete();
+                                                    },
                                                     child: const Text(
                                                       "Delete",
                                                       style: TextStyle(

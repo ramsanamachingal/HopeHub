@@ -97,7 +97,7 @@ class _mentrepoState extends State<mentrepo> {
                                   top: 30, left: 30, bottom: 20),
                               child: Row(
                                 children: [
-                                  Image.network(sessions[index].presctiption),
+                                  Image.network(sessions[index].presctiption,height: 150,width: 100,fit: BoxFit.cover),
                                   FutureBuilder<
                                           DocumentSnapshot<
                                               Map<String, dynamic>>>(
@@ -154,12 +154,21 @@ class _mentrepoState extends State<mentrepo> {
                                             //   ),
                                             // )
 
-                                            ElevatedButton(
-                                                onPressed: () async {
-                                                  await launch(sessions[index]
-                                                      .presctiption);
-                                                },
-                                                child: Text("Open"))
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 30,top: 20),
+                                              child: ElevatedButton(style: ButtonStyle(
+                                                                        shape: MaterialStatePropertyAll(
+                                                                            RoundedRectangleBorder(
+                                                                                borderRadius: BorderRadius.circular(7),
+                                                                                side: BorderSide(color: Colors.white))),
+                                                                        backgroundColor:
+                                                                            MaterialStatePropertyAll(Colors.amber[900])),
+                                                  onPressed: () async {
+                                                    await launch(sessions[index]
+                                                        .presctiption);
+                                                  },
+                                                  child: Text("Open",style: GoogleFonts.inknutAntiqua(color:Colors.white),)),
+                                            )
                                           ],
                                         );
                                       })

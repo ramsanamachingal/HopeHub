@@ -271,9 +271,7 @@ class _sign_instate extends State<sign_in> {
                                 .uploadImage("userprofile",selectedImage!)
                                 .then((value) {
                               imageUrl = value;
-                            });
-                          }
-                          AuthenctionUser()
+                              AuthenctionUser()
                               .registerAUser(
                                   context,
                                   EmailController.text,
@@ -292,6 +290,29 @@ class _sign_instate extends State<sign_in> {
                                     builder: (context) => const LoginPage())),
                                 (route) => false);
                           });
+                            });
+                          }else{
+                            AuthenctionUser()
+                              .registerAUser(
+                                  context,
+                                  EmailController.text,
+                                  ConfirmPassController.text,
+                                  UserModel(
+                                      name: UserNameController.text,
+                                      email: EmailController.text,
+                                      phone: PhoneController.text,
+                                      address: AddressController.text,
+                                      imageUrl: imageUrl ?? ""))
+                              .then((value) {
+                            CSnackBar.showSuccesSnack(context,
+                                "Registration Succesfull!,Please Login");
+                            Navigator.of(context).pushAndRemoveUntil(
+                                (MaterialPageRoute(
+                                    builder: (context) => const LoginPage())),
+                                (route) => false);
+                          });
+                          }
+                          
                         }
                       },
                       child: Text(

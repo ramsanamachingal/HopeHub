@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +8,7 @@ import 'package:hopehub/presentation/module/admin/adhome.dart';
 import 'package:hopehub/presentation/module/admin/admenu.dart';
 import 'package:hopehub/presentation/module/admin/adnotification.dart';
 import 'package:hopehub/presentation/module/admin/aduser.dart';
+import 'package:hopehub/presentation/module/admin/edit_mentor.dart';
 import 'package:hopehub/presentation/module/admin/newment.dart';
 
 class adment extends StatefulWidget {
@@ -132,42 +135,41 @@ class _admentState extends State<adment> {
                                               left: 20, top: 10),
                                           child: Row(
                                             children: [
-                                             
                                               StreamBuilder(
-                                                stream: FirebaseFirestore
-                                                    .instance
-                                                    .collection("doctor")
-                                                    .doc(mentors[index].id)
-                                                    .snapshots(),
-                                                builder: (context, snapshot) {
-                                                   if (snapshot
-                                                          .connectionState ==
-                                                      ConnectionState.waiting) {
-                                                    return const Center(
-                                                      child:
-                                                          CircularProgressIndicator(),
-                                                    );
-                                                  }
-                                                  //  MentorModel mentormodel =
-                                                  //     MentorModel.fromMap(snapshot
-                                                  //         .data!
-                                                  //         .data()!);
-                                                  // String image = mentormodel.profile.toString
-                                                     
+                                                  stream: FirebaseFirestore
+                                                      .instance
+                                                      .collection("doctor")
+                                                      .doc(mentors[index].id)
+                                                      .snapshots(),
+                                                  builder: (context, snapshot) {
+                                                    if (snapshot
+                                                            .connectionState ==
+                                                        ConnectionState
+                                                            .waiting) {
+                                                      return const Center(
+                                                        child:
+                                                            CircularProgressIndicator(),
+                                                      );
+                                                    }
+                                                    //  MentorModel mentormodel =
+                                                    //     MentorModel.fromMap(snapshot
+                                                    //         .data!
+                                                    //         .data()!);
+                                                    // String image = mentormodel.profile.toString
 
-                                                  return  CircleAvatar(
-                                                    radius: 47,
-                                                    backgroundColor: Colors.white,
-                                                    child: CircleAvatar(
-                                                      radius: 45,
-                                                      backgroundImage:
-                                                      //  NetworkImage(image)
-                                                      AssetImage(
-                                                          "assets/mentor.jpg"),
-                                                    ),
-                                                  );
-                                                }
-                                              ),
+                                                    return CircleAvatar(
+                                                      radius: 47,
+                                                      backgroundColor:
+                                                          Colors.white,
+                                                      child: CircleAvatar(
+                                                        radius: 45,
+                                                        backgroundImage:
+                                                            //  NetworkImage(image)
+                                                            NetworkImage(
+                                                                mentors[index].profile),
+                                                      ),
+                                                    );
+                                                  }),
                                               Padding(
                                                 padding: const EdgeInsets.only(
                                                     left: 10, top: 10),
@@ -246,7 +248,10 @@ class _admentState extends State<adment> {
                                                           context,
                                                           MaterialPageRoute(
                                                               builder: (context) =>
-                                                                  AddNewMentorPage(
+                                                                  EditMentor(
+                                                                    email: mentormodel.email,
+                                                                    password: mentormodel.password,
+                                                                    mentorId: mentormodel.id!,
                                                                     doctroID: widget
                                                                         .doctroID,
                                                                   )));
@@ -278,7 +283,19 @@ class _admentState extends State<adment> {
                                                               MaterialStatePropertyAll(
                                                                   Colors.amber[
                                                                       900])),
-                                                      onPressed: () {},
+                                                      onPressed: ()async {
+                                                        log( mentormodel.id!);
+                                                 try{
+                                                   await      FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                "mentor")
+                                                            .doc( mentormodel.id)
+                                                            .delete();
+                                                 }catch(e){
+                                                  log(e.toString());
+                                                 }
+                                                      },
                                                       child: const Text(
                                                         "Delete",
                                                         style: TextStyle(

@@ -35,6 +35,7 @@ class MentorModel {
       };
   factory MentorModel.fromData(Map<String, dynamic> i) {
     return MentorModel(
+      id: i["id"],
       doctorId:i["doctorId"],
         profile: i['profile'],
         name: i["name"],

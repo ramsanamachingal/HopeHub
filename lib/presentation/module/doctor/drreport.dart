@@ -92,7 +92,7 @@ class _drreportState extends State<drreport> {
                   : ListView.builder(
                       itemCount: listOfSessions.length,
                       itemBuilder: (context, index) => Container(
-                        margin: EdgeInsets.all(20),
+                        margin: EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(7),
                           border: Border.all(width: 1, color: Colors.white),
@@ -102,10 +102,12 @@ class _drreportState extends State<drreport> {
                         width: 350,
                         child: Padding(
                           padding: const EdgeInsets.only(
-                              top: 30, left: 30, bottom: 20),
+                              top: 30, left: 10, bottom: 20),
                           child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Image.network(listOfSessions[index].prescription),
+                              Image.network(listOfSessions[index].prescription,height: 150,width: 170,fit: BoxFit.cover,),
                               FutureBuilder<DocumentSnapshot>(
                                   future: DbController().getSelectedMentor(
                                       listOfSessions[index].metID),
@@ -116,16 +118,26 @@ class _drreportState extends State<drreport> {
                                         child: CircularProgressIndicator(),
                                       );
                                     }
+                                    if(!snapshot.data!.exists){
+                               return       Text(
+                                            "Mentor not Availabler",
+                                            style: GoogleFonts.inknutAntiqua(
+                                                color: Colors.white,
+                                                fontSize: 15),
+                                          );
+
+                                    }
+                                 
                                     MentorModel mentor = MentorModel.fromData(
                                         snapshot.data!.data()
                                             as Map<String, dynamic>);
                                     return Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 10),
+                                          padding: const EdgeInsets.only(left: 20,top: 20),
                                           child: Text(
                                             "Assigned :${mentor.name}",
                                             style: GoogleFonts.inknutAntiqua(
@@ -134,12 +146,21 @@ class _drreportState extends State<drreport> {
                                           ),
                                         ),
 
-                                        ElevatedButton(
-                                            onPressed: () async {
-                                              await launch(listOfSessions[index]
-                                                  .prescription);
-                                            },
-                                            child: Text("Open"))
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 40,top: 20),
+                                          child: ElevatedButton( style: ButtonStyle(
+                                                                      shape: MaterialStatePropertyAll(
+                                                                          RoundedRectangleBorder(
+                                                                              borderRadius: BorderRadius.circular(7),
+                                                                              side: BorderSide(color: Colors.white))),
+                                                                      backgroundColor:
+                                                                          MaterialStatePropertyAll(Colors.amber[900])),
+                                              onPressed: () async {
+                                                await launch(listOfSessions[index]
+                                                    .prescription);
+                                              },
+                                              child: Text("Open",style: GoogleFonts.inknutAntiqua(color:Colors.white),)),
+                                        )
                                         // Padding(
                                         //   padding: const EdgeInsets.only(
                                         //       left: 10, top: 15),

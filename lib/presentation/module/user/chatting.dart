@@ -102,7 +102,7 @@ class _chattingState extends State<chatting> {
             }));
   }
 
-  navigate() {}
+  
 
   onpop() {
     if (widget.userCollection == "user" || widget.userCollection == "mentor") {

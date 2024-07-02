@@ -21,6 +21,7 @@ class _logoState extends State<logo> {
   @override
   void initState() {
     super.initState();
+    //if eny issue facing when login eny type of user =====uncomment the below code an resatrt applicationj
       // LoginPreference.clearPreference();
 // 
     Future.delayed(const Duration(seconds: 3), () {

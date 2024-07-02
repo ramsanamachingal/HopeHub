@@ -72,29 +72,30 @@ class _mentproState extends State<mentpro> {
               MentorModel mentor = MentorModel.fromData(
                   snapshot.data!.data() as Map<String, dynamic>);
               return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Stack(
                     children: [
-                      Image.asset(
-                        "assets/mentbg.jp",
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 300, top: 280),
-                        child: CircleAvatar(
-                          radius: 25,
-                          backgroundColor: Colors.white,
-                          child: CircleAvatar(
-                            radius: 20,
-                            backgroundColor: Colors.blue,
-                            child: Icon(
-                              Icons.camera_alt_rounded,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
+                      // Image.asset(
+                      //   "assets/mentbg.jp",
+                      // ),
+                      // const Padding(
+                      //   padding: EdgeInsets.only(left: 300, top: 280),
+                      //   child: CircleAvatar(
+                      //     radius: 25,
+                      //     backgroundColor: Colors.white,
+                      //     child: CircleAvatar(
+                      //       radius: 20,
+                      //       backgroundColor: Colors.blue,
+                      //       child: Icon(
+                      //         Icons.camera_alt_rounded,
+                      //         color: Colors.white,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       Padding(
-                        padding: EdgeInsets.only(left: 110, top: 240),
+                        padding: EdgeInsets.only(left: 110, top: 140),
                         child: CircleAvatar(
                           radius: 87,
                           backgroundImage: NetworkImage(
@@ -102,75 +103,50 @@ class _mentproState extends State<mentpro> {
                           ),
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 340, left: 250),
-                        child: Stack(
-                          children: [
-                            CircleAvatar(
-                                radius: 25,
-                                backgroundColor: Colors.white,
-                                child: CircleAvatar(
-                                  radius: 20,
-                                  child: Icon(
-                                    Icons.camera_alt_sharp,
-                                    color: Colors.white,
-                                  ),
-                                  backgroundColor: Colors.blue,
-                                ))
-                          ],
-                        ),
-                      )
+                      
                     ],
                   ),
-                  Text(
-                    mentor.name,
-                    style: GoogleFonts.inknutAntiqua(
-                        color: Colors.white, fontSize: 24),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 100,top: 40),
+                    child: Text(
+                      mentor.name,
+                      style: GoogleFonts.inknutAntiqua(
+                          color: Colors.white, fontSize: 24),
+                    ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 20),
+                    padding: const EdgeInsets.only(left: 100,top: 10),
                     child: Text(
                       mentor.qualification,
                       style: GoogleFonts.inknutAntiqua(
                           color: Colors.white, fontSize: 15),
                     ),
                   ),
-                  Text(
-                    "${mentor.experience} years Experience",
-                    style: GoogleFonts.inknutAntiqua(
-                        color: Colors.white, fontSize: 15),
-                  ),
-                  Text(
-                    mentor.language,
-                    style: GoogleFonts.inknutAntiqua(
-                        color: Colors.white, fontSize: 15),
-                  ),
-                  Text(
-                    mentor.email,
-                    style: GoogleFonts.inknutAntiqua(
-                        color: Colors.white, fontSize: 15),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 100,),
+                    child: Text(
+                      "${mentor.experience} years Experience",
+                      style: GoogleFonts.inknutAntiqua(
+                          color: Colors.white, fontSize: 15),
+                    ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 20, top: 40),
-                    child: SizedBox(
-                        height: 40,
-                        width: 150,
-                        child: ElevatedButton(
-                            style: ButtonStyle(
-                                shape: MaterialStatePropertyAll(
-                                    RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(7),
-                                        side: const BorderSide(
-                                            color: Colors.white))),
-                                backgroundColor: MaterialStatePropertyAll(
-                                    Colors.amber[900])),
-                            onPressed: () {},
-                            child: Text(
-                              "share",
-                              style: GoogleFonts.inknutAntiqua(
-                                  color: Colors.white),
-                            ))),
-                  )
+                    padding: const EdgeInsets.only(left: 100,),
+                    child: Text(
+                      mentor.language,
+                      style: GoogleFonts.inknutAntiqua(
+                          color: Colors.white, fontSize: 15),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 100,),
+                    child: Text(
+                      mentor.email,
+                      style: GoogleFonts.inknutAntiqua(
+                          color: Colors.white, fontSize: 15),
+                    ),
+                  ),
+                  // 
                 ],
               );
             }),

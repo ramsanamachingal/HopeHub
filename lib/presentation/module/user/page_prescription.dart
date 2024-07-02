@@ -79,7 +79,7 @@ class _PrescriptionState extends State<Prescription> {
                                   top: 30, left: 30, bottom: 20),
                               child: Row(
                                 children: [
-                                  Image.network(sessions[index].prescription),
+                                  Image.network(sessions[index].prescription,height: 150,width: 100,fit: BoxFit.cover),
                                   FutureBuilder<
                                           DocumentSnapshot<
                                               Map<String, dynamic>>>(
@@ -105,12 +105,21 @@ class _PrescriptionState extends State<Prescription> {
                                               ),
                                             ),
 
-                                            ElevatedButton(
-                                                onPressed: () async {
-                                                  await launch(sessions[index]
-                                                      .prescription);
-                                                },
-                                                child: Text("Open"))
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 30,top: 20),
+                                              child: ElevatedButton(style: ButtonStyle(
+                                                                          shape: MaterialStatePropertyAll(
+                                                                              RoundedRectangleBorder(
+                                                                                  borderRadius: BorderRadius.circular(7),
+                                                                                  side: BorderSide(color: Colors.white))),
+                                                                          backgroundColor:
+                                                                              MaterialStatePropertyAll(Colors.amber[900])),
+                                                  onPressed: () async {
+                                                    await launch(sessions[index]
+                                                        .prescription);
+                                                  },
+                                                  child: Text("Open",style: GoogleFonts.inknutAntiqua(color:Colors.white),)),
+                                            )
                                             // Padding(
                                             //   padding: const EdgeInsets.only(
                                             //       top: 78, left: 80),

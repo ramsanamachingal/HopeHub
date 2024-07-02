@@ -19,6 +19,11 @@ class AdminController {
     fetchAllDr();
   }
 
+
+editDr(Drmodel drmodel,){
+  db.collection("doctor").doc(drmodel.id).update(drmodel.toMap(drmodel.id));
+
+}
   Future<void> create(
       String name,
       String qualification,
@@ -74,7 +79,7 @@ class AdminController {
     final storageRef =
         FirebaseStorage.instance.ref().child('images/${imageFile.path}');
     try {
-      final uploadTask = storageRef.putFile(imageFile,metadata);
+      final uploadTask = storageRef.putFile(imageFile, metadata);
       final snapshot = await uploadTask.whenComplete(() => null);
       return await snapshot.ref.getDownloadURL();
     } on FirebaseException catch (e) {
@@ -83,14 +88,18 @@ class AdminController {
     }
   }
 
-   Future addMentor(MentorModel mentorModel,uid)async{
-    final mentRef=db.collection('mentor').doc(uid);
+  Future addMentor(MentorModel mentorModel, uid) async {
+    final mentRef = db.collection('mentor').doc(uid);
     mentRef.set(mentorModel.data(mentRef.id));
   }
-  MentorModel?singleMentorData;
-  Future fetchSingleMentor(id)async{
-    final snapshot=await db.collection("mentor").doc(id)
-    .get();
-    singleMentorData=MentorModel.fromData(snapshot.data()!);
+
+  Future editMentors(MentorModel model) async {
+    await db.collection('mentor').doc(model.id).update(model.data(model.id));
+  }
+
+  MentorModel? singleMentorData;
+  Future fetchSingleMentor(id) async {
+    final snapshot = await db.collection("mentor").doc(id).get();
+    singleMentorData = MentorModel.fromData(snapshot.data()!);
   }
 }

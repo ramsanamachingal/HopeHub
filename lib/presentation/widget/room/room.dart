@@ -153,6 +153,76 @@ class _MeetingScreenState extends State<MeetingScreen> {
 
     return true;
   }
+  num? totalRating;
+  ratingDiologue() {
+    return showDialog(
+        context: context,
+        builder: (context) => FutureBuilder(
+            future: FirebaseFirestore.instance
+                .collection("doctor")
+                .doc(widget.doctorId)
+                .get(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return AlertDialog(
+                actions: [
+                  RatingBar.builder(
+                      initialRating: 0,
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      itemCount: 5,
+                      itemPadding: const EdgeInsets.symmetric(horizontal: 4),
+                      itemBuilder: (context, _) => const Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                      onRatingUpdate: (rate) async {
+                        totalRating = rate + snapshot.data!.data()!["rating"];
+                      }),
+                  TextButton(
+                      onPressed: () async {
+                        if (totalRating != null) {
+                          // log(totalRating.toString());
+                          try {
+                            await FirebaseFirestore.instance
+                                .collection("doctor")
+                                .doc(widget.doctorId)
+                                .update({"rating": totalRating}).then((value)async {
+                              // final pop = Navigator.of(context);
+                              // pop.pop();
+                              // pop.pop();
+                               await leave();
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => packages(indexnum: 0)),
+          (route) => false);
+                            });
+                          } catch (e) {
+                            CSnackBar.showErrorSnack(context, e.toString());
+                          }
+                        } else {
+                          final pop = Navigator.of(context);
+                          pop.pop();
+                          pop.pop();
+                        }
+                      },
+                      child: const Text("Submit"))
+                ],
+                title: Text(
+                  "Enter Your Rating",
+                  style: GoogleFonts.inknutAntiqua(fontSize: 20),
+                ),
+              );
+            }));
+  }
+
+  
+
+ 
 
   // This widget is the root of your application.
   @override
@@ -299,11 +369,7 @@ class _MeetingScreenState extends State<MeetingScreen> {
     if (mounted) {
       // return ratingDiologue();
 
-      await leave();
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => packages(indexnum: 0)),
-          (route) => false);
-    }
+     ratingDiologue(); }
   }
 
   _leaveRoomDoctor() async {

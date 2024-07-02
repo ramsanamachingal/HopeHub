@@ -251,7 +251,7 @@ class _drhomeState extends State<drhome> {
                                                                     const EdgeInsets
                                                                         .only(
                                                                         right:
-                                                                            20),
+                                                                            10),
                                                                 child: Text(
                                                                   // "10:00 PM",
                                                                   DateTime.parse(
@@ -262,7 +262,7 @@ class _drhomeState extends State<drhome> {
                                                                       color: Colors
                                                                           .white,
                                                                       fontSize:
-                                                                          15),
+                                                                          13),
                                                                 ),
                                                               ),
                                                             ),

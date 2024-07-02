@@ -123,6 +123,7 @@ class _ReportPageState extends State<ReportPage> {
                             ConnectionState.waiting) {
                           return const Center();
                         }
+                        
                         return DropdownButtonFormField(
                             validator: (value) {
                               if (value == null) {

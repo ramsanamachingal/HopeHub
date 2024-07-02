@@ -31,7 +31,7 @@ class _adnotiState extends State<adnoti> {
                 size: 30,
               )),
           title: Text(
-            "Review",
+            "Feedback",
             style: GoogleFonts.inknutAntiqua(color: Colors.white, fontSize: 20),
           ),
         ),

@@ -39,6 +39,27 @@ class _MenterSchedulePAgeState extends State<MenterSchedulePAge> {
               child: CircularProgressIndicator(),
             );
           }
+
+          if(!snapshot.data!.exists){
+       return     Center(
+         child: Container(
+         
+         padding: EdgeInsets.all(30),
+           width: 350,
+                  // height: 300,
+                  // color: Colors.black,
+                  decoration: BoxDecoration(
+                      border: Border.all(width: 1, color: Colors.white),
+                      borderRadius: BorderRadius.circular(7)),
+           child: Text(
+                                                "Mentor not Availabler",
+                                                style: GoogleFonts.inknutAntiqua(
+                                                    color: Colors.white,
+                                                    fontSize: 15),
+                                              ),
+         ),
+       );
+          }
           MentorModel mentorModel = MentorModel.fromData(
               snapshot.data!.data() as Map<String, dynamic>);
           return Padding(

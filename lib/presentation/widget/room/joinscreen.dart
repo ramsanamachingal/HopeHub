@@ -8,9 +8,10 @@ import 'package:hopehub/presentation/widget/room/api_controller.dart';
 class JoinScreen extends StatelessWidget {
   bool iscall;
   bool isMeetWithMentor;
+  String ?docId;
   final _meetingIdController = TextEditingController();
 
-  JoinScreen({super.key, required this.iscall,required this.isMeetWithMentor});
+  JoinScreen({super.key, required this.iscall,required this.isMeetWithMentor, this.docId});
 
   void onJoinButtonPressed(BuildContext context) {
     String meetingId = _meetingIdController.text;
@@ -23,7 +24,7 @@ class JoinScreen extends StatelessWidget {
         MaterialPageRoute(
           builder: (context) => MeetingScreen(
             isCall: iscall,
-            doctorId: "N/A",
+            doctorId:docId?? "N/A",
             sessionId: "N/A",
             isMentor: false,
             bookingId: "N/A",

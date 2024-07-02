@@ -197,8 +197,12 @@ class _sheduleState extends State<schedle> {
 
                     if (snapshot.hasData) {
                       return mybookings.isEmpty
-                          ?  Center(
-                              child: Text("No Schedules Found",style: GoogleFonts.inknutAntiqua(color:Colors.white),),
+                          ? Center(
+                              child: Text(
+                                "No Schedules Found",
+                                style: GoogleFonts.inknutAntiqua(
+                                    color: Colors.white),
+                              ),
                             )
                           : mybookings[0].status == "assigned"
                               ? StreamBuilder<QuerySnapshot>(
@@ -240,6 +244,31 @@ class _sheduleState extends State<schedle> {
                                             return const Center(
                                               child:
                                                   CircularProgressIndicator(),
+                                            );
+                                          }
+
+                                          if (!snapshot.data!.exists) {
+                                           return Center(
+                                              child: Container(
+                                                padding: EdgeInsets.all(30),
+                                                width: 350,
+                                                // height: 300,
+                                                // color: Colors.black,
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        width: 1,
+                                                        color: Colors.white),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            7)),
+                                                child: Text(
+                                                  "Doctor not Availabler",
+                                                  style:
+                                                      GoogleFonts.inknutAntiqua(
+                                                          color: Colors.white,
+                                                          fontSize: 15),
+                                                ),
+                                              ),
                                             );
                                           }
                                           Drmodel drmodel = Drmodel.fromMap(
@@ -446,7 +475,7 @@ class _sheduleState extends State<schedle> {
                                                                           context)
                                                                       .push(MaterialPageRoute(
                                                                           builder: (context) => JoinScreen(
-
+                                                                                docId: mybookings[index].doctorid,
                                                                                 iscall: true,
                                                                                 isMeetWithMentor: false,
                                                                               )));
@@ -457,6 +486,7 @@ class _sheduleState extends State<schedle> {
                                                                           context)
                                                                       .push(MaterialPageRoute(
                                                                           builder: (context) => JoinScreen(
+                                                                                docId: mybookings[index].doctorid,
                                                                                 iscall: false,
                                                                                 isMeetWithMentor: false,
                                                                               )));
