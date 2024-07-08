@@ -102,8 +102,6 @@ class _chattingState extends State<chatting> {
             }));
   }
 
-  
-
   onpop() {
     if (widget.userCollection == "user" || widget.userCollection == "mentor") {
       return Navigator.pop(context);
@@ -129,7 +127,45 @@ class _chattingState extends State<chatting> {
                   padding: const EdgeInsets.only(top: 20),
                   child: IconButton(
                     onPressed: () {
-                      onpop();
+                      if (widget.isMentor) {
+                        showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  title:
+                                      Text("Is this session is completed..?"),
+                                  actions: [
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          final posp = Navigator.of(context);
+                                          posp.pop();
+                                          posp.pop();
+                                        },
+                                        child: Text("No")),
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          DbController()
+                                              .getTotolaSesstion(
+                                                  widget.sessionId)
+                                              .then((value) {
+                                            DbController()
+                                                .reduceSessionByMentor(
+                                                    widget.sessionId,
+                                                    value - 1,
+                                                    widget.doctorId,
+                                                    widget.bookingId,
+                                                    widget.userId);
+                                          }).then((value) {
+                                            final posp = Navigator.of(context);
+                                            posp.pop();
+                                            posp.pop();
+                                          });
+                                        },
+                                        child: Text("Yes"))
+                                  ],
+                                ));
+                      } else {
+                        onpop();
+                      }
                     },
                     icon: const Icon(
                       Icons.cancel,
@@ -217,34 +253,45 @@ class _chattingState extends State<chatting> {
           //  ],
         ),
         backgroundColor: Colors.grey[850],
-        body: Padding(
-          padding: const EdgeInsets.all(20),
-          child: StreamBuilder<QuerySnapshot>(
-              stream: CommunicationController().getMessage(
-                  FirebaseAuth.instance.currentUser!.uid, widget.receiverId),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                List<MessageModel> messages = snapshot.data!.docs
-                    .map((e) =>
-                        MessageModel.fromJson(e.data() as Map<String, dynamic>))
-                    .toList();
-                if (snapshot.hasData) {
-                  return ListView.separated(
-                      itemCount: messages.length,
-                      separatorBuilder: (context, index) => const SizedBox(
-                            height: 20,
-                          ),
-                      itemBuilder: (context, index) {
-                        return _buildMessage(messages[index]);
-                      });
-                } else {
-                  return const SizedBox();
-                }
-              }),
+        body: Column(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: StreamBuilder<QuerySnapshot>(
+                    stream: CommunicationController().getMessage(
+                        FirebaseAuth.instance.currentUser!.uid,
+                        widget.receiverId),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      List<MessageModel> messages = snapshot.data!.docs
+                          .map((e) => MessageModel.fromJson(
+                              e.data() as Map<String, dynamic>))
+                          .toList();
+                      if (snapshot.hasData) {
+                        return ListView.separated(
+                            itemCount: messages.length,
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                            itemBuilder: (context, index) {
+                              return _buildMessage(messages[index]);
+                            });
+                      } else {
+                        return const SizedBox();
+                      }
+                    }),
+              ),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * .08,
+            )
+          ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Container(
