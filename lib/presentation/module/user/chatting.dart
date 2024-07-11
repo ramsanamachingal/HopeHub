@@ -102,8 +102,6 @@ class _chattingState extends State<chatting> {
             }));
   }
 
-  
-
   onpop() {
     if (widget.userCollection == "user" || widget.userCollection == "mentor") {
       return Navigator.pop(context);
@@ -129,7 +127,45 @@ class _chattingState extends State<chatting> {
                   padding: const EdgeInsets.only(top: 20),
                   child: IconButton(
                     onPressed: () {
-                      onpop();
+                      if (widget.isMentor) {
+                        showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  title:
+                                      Text("Is this session is completed..?"),
+                                  actions: [
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          final posp = Navigator.of(context);
+                                          posp.pop();
+                                          posp.pop();
+                                        },
+                                        child: Text("No")),
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          DbController()
+                                              .getTotolaSesstion(
+                                                  widget.sessionId)
+                                              .then((value) {
+                                            DbController()
+                                                .reduceSessionByMentor(
+                                                    widget.sessionId,
+                                                    value - 1,
+                                                    widget.doctorId,
+                                                    widget.bookingId,
+                                                    widget.userId);
+                                          }).then((value) {
+                                            final posp = Navigator.of(context);
+                                            posp.pop();
+                                            posp.pop();
+                                          });
+                                        },
+                                        child: Text("Yes"))
+                                  ],
+                                ));
+                      } else {
+                        onpop();
+                      }
                     },
                     icon: const Icon(
                       Icons.cancel,

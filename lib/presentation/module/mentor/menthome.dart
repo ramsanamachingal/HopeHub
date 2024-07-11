@@ -116,6 +116,11 @@ class _menthomeState extends State<menthome> {
                         child: CircularProgressIndicator(),
                       );
                     }
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text(snapshot.error.toString()),
+                      );
+                    }
                     List<SessionModel> listOfSessions = snapshot.data!.docs
                         .map((e) => SessionModel.fromjson(
                             e.data() as Map<String, dynamic>))
@@ -174,9 +179,8 @@ class _menthomeState extends State<menthome> {
                                                               8),
                                                       child: SizedBox(
                                                         height: 170,
-                                                        
-                                                        width:
-                                                        100,
+
+                                                        width: 100,
                                                         // MediaQuery.of(
                                                         //             context)
                                                         //         .size
@@ -185,7 +189,8 @@ class _menthomeState extends State<menthome> {
                                                         child: Image.network(
                                                           userData.imageUrl!,
                                                           // scale: 1.3,
-                                                          height: 50,width: 70,fit: BoxFit.cover ,
+                                                          height: 50, width: 70,
+                                                          fit: BoxFit.cover,
                                                         ),
                                                       ),
                                                     ),
@@ -290,30 +295,37 @@ class _menthomeState extends State<menthome> {
                                                             return const SizedBox();
                                                           }
 
-                                                           if (!snapshot.data!.exists) {
-                                           return Center(
-                                              child: Container(
-                                                padding: EdgeInsets.all(30),
-                                                width: 350,
-                                                // height: 300,
-                                                // color: Colors.black,
-                                                decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        width: 1,
-                                                        color: Colors.white),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            7)),
-                                                child: Text(
-                                                  "Doctor not Availabler",
-                                                  style:
-                                                      GoogleFonts.inknutAntiqua(
-                                                          color: Colors.white,
-                                                          fontSize: 15),
-                                                ),
-                                              ),
-                                            );
-                                          }
+                                                          if (!snapshot
+                                                              .data!.exists) {
+                                                            return Center(
+                                                              child: Container(
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(
+                                                                            30),
+                                                                width: 350,
+                                                                // height: 300,
+                                                                // color: Colors.black,
+                                                                decoration: BoxDecoration(
+                                                                    border: Border.all(
+                                                                        width:
+                                                                            1,
+                                                                        color: Colors
+                                                                            .white),
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            7)),
+                                                                child: Text(
+                                                                  "Doctor not Availabler",
+                                                                  style: GoogleFonts.inknutAntiqua(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          15),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          }
                                                           Drmodel dr = Drmodel
                                                               .fromMap(snapshot
                                                                       .data!
