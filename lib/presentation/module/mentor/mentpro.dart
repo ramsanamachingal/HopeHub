@@ -26,6 +26,7 @@ class _mentproState extends State<mentpro> {
     return Scaffold(
         drawer: MentorCusDrawer(),
         appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.white),
           backgroundColor: Colors.transparent,
           bottom: const PreferredSize(
               preferredSize: Size.fromHeight(20), child: Divider()),

@@ -235,16 +235,19 @@ class _chattingState extends State<chatting> {
                 if (snapshot.hasData) {
                   return ListView.separated(
                       itemCount: messages.length,
+                      physics: BouncingScrollPhysics(),
                       separatorBuilder: (context, index) => const SizedBox(
                             height: 20,
                           ),
                       itemBuilder: (context, index) {
                         return _buildMessage(messages[index]);
+                        // SizedBox(height: 100,);
                       });
                 } else {
                   return const SizedBox();
                 }
               }),
+
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Container(

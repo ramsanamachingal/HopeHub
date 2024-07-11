@@ -166,8 +166,7 @@ class _drhomeState extends State<drhome> {
                                                                   .all(8),
                                                           child: Image.network(
                                                             userModel.imageUrl!,
-                                                            scale: 1.3,
-                                                          ),
+                                                            height: 150,width: 100,fit: BoxFit.cover,                                                          ),
                                                         )
                                                       : const CircleAvatar(
                                                           radius: 50,

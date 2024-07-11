@@ -35,7 +35,7 @@ class _logo1state extends State<logo1> {
                       // mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(top: 600),
+                          padding: const EdgeInsets.only(top: 570,left: 25),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -132,7 +132,7 @@ class _logo1state extends State<logo1> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(top: 600),
+                          padding: const EdgeInsets.only(top: 550,left: 40),
                           child: Text(
                               "You're not alone. I'm here for you, always.",
                               style: GoogleFonts.inriaSans(
@@ -221,7 +221,7 @@ class _logo1state extends State<logo1> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(top: 600, left: 20),
+                          padding: const EdgeInsets.only(top: 550, left: 20),
                           child: Text(
                               "Instantly chat with experts any time of the day ",
                               style: GoogleFonts.inriaSans(
@@ -312,7 +312,7 @@ class _logo1state extends State<logo1> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(top: 600, left: 20),
+                          padding: const EdgeInsets.only(top: 550, left: 20),
                           child: Text(
                               "You are stronger than you know, braver than you feel",
                               style: GoogleFonts.inriaSans(

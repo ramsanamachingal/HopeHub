@@ -41,6 +41,7 @@ class _menthomeState extends State<menthome> {
         drawer: const MentorCusDrawer(),
         appBar: AppBar(
           backgroundColor: Colors.transparent,
+          iconTheme: IconThemeData(color: Colors.white),
           bottom: const PreferredSize(
               preferredSize: Size.fromHeight(20), child: Divider()),
           toolbarHeight: 50,

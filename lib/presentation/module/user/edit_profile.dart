@@ -157,24 +157,26 @@ class _editState extends State<edit> {
                       )
                     ],
                   ),
-                  SizedBox(
-                    height: 70,
-                    width: 350,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        top: 20,
-                      ),
-                      child: TextFormField(
-                        controller: nameController,
-                        style: TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(7),
-                                borderSide: BorderSide(color: Colors.white)),
-                            labelText: "Name",
-                            labelStyle: GoogleFonts.inknutAntiqua(
-                                color: Colors.white.withOpacity(0.5),
-                                fontSize: 15)),
+                  Center(
+                    child: SizedBox(
+                      height: 70,
+                      width: 350,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          top: 20,
+                        ),
+                        child: TextFormField(
+                          controller: nameController,
+                          style: TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(7),
+                                  borderSide: BorderSide(color: Colors.white)),
+                              labelText: "Name",
+                              labelStyle: GoogleFonts.inknutAntiqua(
+                                  color: Colors.white.withOpacity(0.5),
+                                  fontSize: 15)),
+                        ),
                       ),
                     ),
                   ),

@@ -87,23 +87,23 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(
             height: 30,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: TextField(
-              style: const TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(7),
-                      borderSide: const BorderSide(color: Colors.white)),
-                  labelText: "Search",
-                  labelStyle: GoogleFonts.inknutAntiqua(
-                      color: Colors.white.withOpacity(0.5)),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: Colors.white.withOpacity(0.5),
-                  )),
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 10),
+          //   child: TextField(
+          //     style: const TextStyle(color: Colors.white),
+          //     decoration: InputDecoration(
+          //         border: OutlineInputBorder(
+          //             borderRadius: BorderRadius.circular(7),
+          //             borderSide: const BorderSide(color: Colors.white)),
+          //         labelText: "Search",
+          //         labelStyle: GoogleFonts.inknutAntiqua(
+          //             color: Colors.white.withOpacity(0.5)),
+          //         prefixIcon: Icon(
+          //           Icons.search,
+          //           color: Colors.white.withOpacity(0.5),
+          //         )),
+          //   ),
+          // ),
           Padding(
             padding: const EdgeInsets.only(top: 10),
             child: Text(
